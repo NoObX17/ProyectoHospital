@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" fillWidth="false" prefHeight="650.0" prefWidth="800.0" spacing="10" stylesheets="@styles/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.RegisterController">
+    <ImageView fitHeight="111.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@images/logohospital.png" />
+    </ImageView>
+    <Label styleClass="title" text="Registrate!" />
+    <GridPane styleClass="grid-pane">
+        <Label styleClass="label" text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="nombreField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+        <Label styleClass="label" text="Apellidos:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <TextField fx:id="apellidosField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label styleClass="label" text="Fecha de Nacimiento:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <DatePicker fx:id="fechaNacimientoPicker" styleClass="date-picker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <Label styleClass="label" text="DNI:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <TextField fx:id="dniField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+        <Label styleClass="label" text="Teléfono:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <TextField fx:id="telefonoField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+        <Label styleClass="label" text="Dirección:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+        <TextField fx:id="direccionField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+        <Label styleClass="label" text="Correo Electrónico:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+        <TextField fx:id="correoField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+        <Label styleClass="label" text="Contraseña:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+        <PasswordField fx:id="contrasenaField" styleClass="password-field" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <VBox.margin>
+         <Insets left="175.0" right="175.0" />
+      </VBox.margin>
+    </GridPane>
+    <Button onAction="#handleRegisterButtonAction" styleClass="button" text="Registrar" />
+    <Label fx:id="loginLabel" styleClass="link" onMouseClicked="#goLogin" text="Ya tienes cuenta? Log-in" />
+</VBox>

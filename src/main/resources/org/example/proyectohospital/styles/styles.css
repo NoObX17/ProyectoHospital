@@ -1,0 +1,117 @@
+@font-face {
+    font-family: 'Montserrat';
+    src: url("../fonts/Montserrat-Regular.ttf");/* Ruta del archivo .ttf */
+}
+
+/* Estilos generales */
+.root {
+    -fx-font-family: 'Montserrat';
+    -fx-background-color: #e0f7fa; /* Un color suave y relajante */
+}
+
+/* Estilos para el VBox principal */
+.vbox {
+    -fx-padding: 20;
+    -fx-spacing: 10;
+    -fx-alignment: center;
+}
+
+/* Estilos para el GridPane */
+.grid-pane {
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+    -fx-padding: 10;
+    -fx-background-color: #ffffff; /* Fondo blanco para el formulario */
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #b2ebf2; /* Borde suave */
+    -fx-border-width: 2;
+}
+
+/* Estilos para las etiquetas */
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #008F6F; /* Color de texto oscuro y relajante */
+    -fx-font-weight: bold;
+}
+
+.errormessage {
+    -fx-text-fill: red;
+}
+
+/* Estilos para los campos de texto */
+.text-field, .password-field {
+    -fx-font-size: 14px;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #b2ebf2; /* Borde suave */
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+    -fx-padding: 5;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #00bcd4; /* Borde más llamativo al enfocar */
+}
+
+/* Estilos para el botón de registro */
+.button {
+    -fx-font-size: 14px;
+    -fx-background-color: #1ca381; /* Color de botón temático */
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #008F6F; /* Color más oscuro al pasar el mouse */
+}
+
+/* Estilos para el título */
+.title {
+    -fx-font-size: 24px;
+    -fx-text-fill: #008F6F;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10 0;
+}
+
+
+
+/* Estilos para íconos o imágenes (opcional) */
+.icon {
+    -fx-fill: #00bcd4; /* Color para íconos */
+}
+
+/* Estilos para el DatePicker */
+.date-picker {
+    -fx-font-size: 14px;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #b2ebf2; /* Borde suave */
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+    -fx-padding: 5;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: #1ca381; /* Color de botón temático */
+    -fx-background-radius: 5;
+}
+
+.date-picker .arrow-button:hover {
+    -fx-background-color: #008F6F; /* Color más oscuro al pasar el mouse */
+}
+
+.date-picker .text-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #b2ebf2; /* Borde suave */
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+    -fx-padding: 5;
+}
+
+.link:hover {
+    -fx-font-size: 14px;
+    -fx-text-fill: #1ca381; /* Color de texto oscuro y relajante */
+    -fx-font-weight: bold;
+}
