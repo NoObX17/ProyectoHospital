@@ -1,11 +1,11 @@
 module org.example.proyectohospital {
-    requires javafx.controls;
     requires javafx.fxml;
 
-    requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
+    requires com.calendarfx.view;
+    requires java.desktop;
 
     opens org.example.proyectohospital to javafx.fxml;
     exports org.example.proyectohospital;
