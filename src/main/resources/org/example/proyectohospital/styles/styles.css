@@ -77,10 +77,14 @@
 }
 
 
-
 /* Estilos para íconos o imágenes (opcional) */
 .icon {
-    -fx-fill: #00bcd4; /* Color para íconos */
+    -fx-fill: #008F6F;
+    -fx-cursor: hand;
+}
+
+.icon:hover {
+    -fx-opacity: 0.8;
 }
 
 /* Estilos para el DatePicker */
@@ -114,4 +118,28 @@
     -fx-font-size: 14px;
     -fx-text-fill: #1ca381; /* Color de texto oscuro y relajante */
     -fx-font-weight: bold;
+}
+
+/* Estilos para el TabPane */
+.tab-pane {
+    -fx-tab-min-width: 120px;
+    -fx-tab-max-width: 120px;
+    -fx-tab-min-height: 40px;
+    -fx-tab-max-height: 40px;
+    -fx-background-color: #e0f7fa; /* Fondo suave para las pestañas */
+}
+
+.tab {
+    -fx-background-color: #1ca381; /* Color de fondo de las pestañas */
+    -fx-text-fill: white; /* Color del texto de las pestañas */
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.tab:selected {
+    -fx-background-color: #008F6F; /* Color de fondo de la pestaña seleccionada */
+}
+
+.bienvenida {
+    -fx-font-size: 24px;
 }
