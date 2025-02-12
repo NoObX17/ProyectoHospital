@@ -1,11 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.scene.control.Label?>
+<BorderPane stylesheets="@styles/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.MainController">
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.example.proyectohospital.MainController">
-    <Label styleClass="title" text="Inicio de Sesión" />
-</VBox>
+    <center>
+        <TabPane>
+            <Tab closable="false" text="Inicio">
+                <AnchorPane>
+                </AnchorPane>
+            </Tab>
+            <Tab closable="false" text="Mi Usuario">
+                <AnchorPane>
+                </AnchorPane>
+            </Tab>
+            <Tab closable="false" text="Historial Médico">
+                <AnchorPane>
+                </AnchorPane>
+            </Tab>
+            <Tab closable="false" text="Gestión de Citas">
+                <AnchorPane>
+                </AnchorPane>
+            </Tab>
+        </TabPane>
+    </center>
+    <bottom>
+        <AnchorPane>
+            <VBox alignment="CENTER" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                <HBox alignment="CENTER" spacing="10.0">
+                    <Label text="Síguenos en:" />
+                    <HBox alignment="CENTER" spacing="10.0">
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="icon">
+                            <Image url="@icons/facebook.png" />
+                        </ImageView>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="icon">
+                            <Image url="@icons/twitter.png" />
+                        </ImageView>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="icon">
+                            <Image url="@icons/instagram.png" />
+                        </ImageView>
+                    </HBox>
+                </HBox>
+                <HBox alignment="CENTER" spacing="10.0">
+                    <Label text="Soporte:" />
+                    <Label text="email@example.com" />
+                </HBox>
+                <HBox alignment="CENTER" spacing="10.0">
+                    <Label text="Teléfono: +34 123 456 789">
+                  <padding>
+                     <Insets top="5.0" />
+                  </padding></Label>
+                </HBox>
+            </VBox>
+            <padding>
+                <Insets bottom="20.0" />
+            </padding>
+        </AnchorPane>
+    </bottom>
+</BorderPane>
