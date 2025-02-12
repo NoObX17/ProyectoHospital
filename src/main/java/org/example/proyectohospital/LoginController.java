@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+import org.example.proyectohospital.models.Paciente;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -37,8 +38,20 @@ public class LoginController {
             pstmt.setString(1, correo);
             ResultSet rs = pstmt.executeQuery();
 
-            while (rs.next()) {
+            if (rs.next()) {
                 hashedPass = rs.getString("Contraseña");
+
+                Paciente paciente = new Paciente(
+                    rs.getInt("ID_Paciente"),
+                    rs.getString("Nombre"),
+                    rs.getString("Apellidos"),
+                    rs.getDate("Fecha_Nacimiento"),
+                    rs.getString("DNI"),
+                    rs.getString("Teléfono"),
+                    rs.getString("Dirección"),
+                    rs.getString("Correo_Electrónico")
+                );
+                PacienteSession.setCurrentUser(paciente);
             }
         } catch (SQLException e) {
             e.printStackTrace();
