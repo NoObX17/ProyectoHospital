@@ -32,7 +32,7 @@
                 </AnchorPane>
             </Tab>
             <Tab closable="false" text="Gestión de Citas">
-                <AnchorPane>
+                <AnchorPane fx:id="paneCalendar">
                 </AnchorPane>
             </Tab>
         </TabPane>
