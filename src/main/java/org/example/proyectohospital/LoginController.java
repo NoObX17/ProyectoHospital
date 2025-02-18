@@ -52,6 +52,9 @@ public class LoginController {
                     rs.getString("Correo_Electrónico")
                 );
                 PacienteSession.setCurrentUser(paciente);
+            } else {
+                loginErrorLabel.setVisible(true);
+                loginErrorLabel.setText("Error de Inicio de Sesión. Correo electrónico o contraseña incorrectos.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
