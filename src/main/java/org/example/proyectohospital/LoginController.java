@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.example.proyectohospital.models.Paciente;
 
@@ -24,6 +25,7 @@ public class LoginController {
     @FXML private PasswordField contrasenaField;
     @FXML private Button loginButton;
     @FXML private Label loginErrorLabel;
+    @FXML private Label registerLabel;
 
     @FXML
     private void handleLoginButtonAction() {
@@ -88,6 +90,27 @@ public class LoginController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void goRegister() {
+        // Cargamos la otra escena
+        try {
+            // Load the new scene
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("register.fxml"));
+            Parent root = loader.load();
+
+            // Get current stage
+            Stage stage = (Stage) registerLabel.getScene().getWindow();
+
+            // Set new scene
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle exception (e.g., show error message to user)
         }
     }
 

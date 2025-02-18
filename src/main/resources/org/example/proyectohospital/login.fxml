@@ -23,6 +23,7 @@
     <Label styleClass="errormessage" fx:id="loginErrorLabel" visible="false"/>
     <Button fx:id="loginButton" onAction="#handleLoginButtonAction" styleClass="button" text="Inicia">
       <VBox.margin>
-         <Insets top="15.0" />
+         <Insets top="7.0" />
       </VBox.margin></Button>
+    <Label fx:id="registerLabel" styleClass="link" onMouseClicked="#goRegister" text="No tienes cuenta? Registrate" />
 </VBox>
