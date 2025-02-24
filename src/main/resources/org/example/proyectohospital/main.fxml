@@ -5,7 +5,8 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane stylesheets="@styles/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.MainController">
+<BorderPane stylesheets="@styles/styles.css" xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.MainController">
 
     <center>
         <TabPane>
@@ -13,22 +14,73 @@
                 <AnchorPane>
                     <FlowPane layoutX="14.0" layoutY="14.0">
                         <ImageView fitHeight="111.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@images/logohospital.png" />
+                            <Image url="@images/logohospital.png"/>
                         </ImageView>
                         <Label fx:id="bienvenidaLabel" styleClass="bienvenida" text="Bienvenido/a!">
                             <FlowPane.margin>
-                                <Insets left="10.0" />
+                                <Insets left="10.0"/>
                             </FlowPane.margin>
                         </Label>
                     </FlowPane>
+
+                    <!-- Contenedor de noticias -->
+                    <VBox alignment="CENTER" layoutY="140" spacing="20" AnchorPane.leftAnchor="20.0"
+                          AnchorPane.rightAnchor="20.0">
+                        <Label styleClass="noticias" text="Noticias de interés"/>
+                        <Separator styleClass="separator"/>
+                        <HBox alignment="CENTER" layoutY="140" spacing="20" AnchorPane.leftAnchor="20.0"
+                              AnchorPane.rightAnchor="20.0">
+                            <!-- Noticia 1 -->
+                            <VBox spacing="15">
+                                <ImageView fitHeight="133.0" fitWidth="242.0" preserveRatio="true">
+                                    <Image url="@images/vacunas.png"/>
+                                </ImageView>
+                                <VBox spacing="5">
+                                    <Label styleClass="titulo-noticia" text="Avance en Vacunas"/>
+                                    <Label styleClass="subtitulo-noticia"
+                                           text="Nueva vacuna contra el Alzheimer muestra resultados prometedores en ensayos iniciales"
+                                           wrapText="true"/>
+                                </VBox>
+                            </VBox>
+
+                            <!-- Noticia 2 -->
+                            <VBox spacing="15">
+                                <ImageView fitHeight="150" fitWidth="200" preserveRatio="true">
+                                    <Image url="@images/robot.png"/>
+                                </ImageView>
+                                <VBox spacing="5">
+                                    <Label styleClass="titulo-noticia" text="Cirugía Robótica"/>
+                                    <Label styleClass="subtitulo-noticia"
+                                           text="Hospital implementa nuevo sistema quirúrgico con precisión nanométrica"
+                                           wrapText="true"/>
+                                </VBox>
+                            </VBox>
+
+                            <!-- Noticia 3 -->
+                            <VBox spacing="15">
+                                <ImageView fitHeight="150" fitWidth="200" preserveRatio="true">
+                                    <Image url="@images/mental.png"/>
+                                </ImageView>
+                                <VBox spacing="5">
+                                    <Label styleClass="titulo-noticia" text="Salud Mental"/>
+                                    <Label styleClass="subtitulo-noticia"
+                                           text="Nuevo programa de atención psicológica 24 horas para pacientes crónicos"
+                                           wrapText="true"/>
+                                </VBox>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
                 </AnchorPane>
             </Tab>
             <Tab closable="false" text="Mi Usuario">
                 <AnchorPane>
-                    <VBox fx:id="usuarioVBox" alignment="CENTER" spacing="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="50">
+                    <VBox fx:id="usuarioVBox" alignment="CENTER" spacing="10" AnchorPane.leftAnchor="10"
+                          AnchorPane.rightAnchor="10" AnchorPane.topAnchor="50">
                     </VBox>
                     <!-- Botón para editar -->
-                    <Button onAction="#handleEditarButtonAction" text="Editar" AnchorPane.leftAnchor="700" AnchorPane.rightAnchor="700" AnchorPane.topAnchor="300"/>
+                    <Button onAction="#handleEditarButtonAction" text="Editar" AnchorPane.leftAnchor="700"
+                            AnchorPane.rightAnchor="700" AnchorPane.topAnchor="300"/>
                 </AnchorPane>
             </Tab>
             <Tab closable="false" text="Historial Médico">
@@ -43,34 +95,39 @@
     </center>
     <bottom>
         <AnchorPane>
-            <VBox alignment="CENTER" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <VBox alignment="CENTER" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0"
+                  AnchorPane.rightAnchor="0.0">
                 <HBox alignment="CENTER" spacing="10.0">
-                    <Label text="Síguenos en:" />
+                    <Label text="Síguenos en:"/>
                     <HBox alignment="CENTER" spacing="10.0">
-                        <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#facebookClicked" pickOnBounds="true" preserveRatio="true" styleClass="icon">
-                            <Image url="@icons/facebook.png" />
+                        <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#facebookClicked"
+                                   pickOnBounds="true" preserveRatio="true" styleClass="icon">
+                            <Image url="@icons/facebook.png"/>
                         </ImageView>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#twitterClicked" pickOnBounds="true" preserveRatio="true" styleClass="icon">
-                            <Image url="@icons/twitter.png" />
+                        <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#twitterClicked" pickOnBounds="true"
+                                   preserveRatio="true" styleClass="icon">
+                            <Image url="@icons/twitter.png"/>
                         </ImageView>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#instagramClicked" pickOnBounds="true" preserveRatio="true" styleClass="icon">
-                            <Image url="@icons/instagram.png" />
+                        <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#instagramClicked"
+                                   pickOnBounds="true" preserveRatio="true" styleClass="icon">
+                            <Image url="@icons/instagram.png"/>
                         </ImageView>
                     </HBox>
                 </HBox>
                 <HBox alignment="CENTER" spacing="10.0">
-                    <Label text="Soporte:" />
-                    <Label text="ferreret@hospital.com" />
+                    <Label text="Soporte:"/>
+                    <Label text="ferreret@hospital.com"/>
                 </HBox>
                 <HBox alignment="CENTER" spacing="10.0">
                     <Label text="Teléfono: +34 777 666 333">
                         <padding>
-                            <Insets top="5.0" />
-                        </padding></Label>
+                            <Insets top="5.0"/>
+                        </padding>
+                    </Label>
                 </HBox>
             </VBox>
             <padding>
-                <Insets bottom="20.0" />
+                <Insets bottom="20.0"/>
             </padding>
         </AnchorPane>
     </bottom>

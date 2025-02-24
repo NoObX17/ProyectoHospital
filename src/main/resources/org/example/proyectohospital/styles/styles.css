@@ -143,3 +143,27 @@
 .bienvenida {
     -fx-font-size: 24px;
 }
+/* Estilos para noticias */
+.titulo-noticia {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.subtitulo-noticia {
+    -fx-font-size: 14px;
+    -fx-text-fill: #7f8c8d;
+    -fx-font-style: italic;
+    -fx-wrap-text: true;
+    -fx-max-width: 400px;
+}
+
+.noticias {
+    -fx-font-size: 20px;
+}
+
+.separator .line {
+    -fx-background-color: #008F6F;
+    -fx-pref-height: 4;
+    -fx-border-color: null ;
+}
