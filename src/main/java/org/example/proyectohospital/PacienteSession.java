@@ -12,8 +12,4 @@ public class PacienteSession {
     public static Paciente getCurrentUser() {
         return currentUser;
     }
-
-    public static void clearSession() {
-        currentUser = null;
-    }
 }

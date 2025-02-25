@@ -1,4 +1,4 @@
-package org.example.proyectohospital;
+package org.example.proyectohospital.controllers;
 
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.CalendarSource;
@@ -14,6 +14,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+import org.example.proyectohospital.database.JDBC;
+import org.example.proyectohospital.PacienteSession;
 import org.example.proyectohospital.models.Cita;
 import org.example.proyectohospital.models.Paciente;
 
@@ -68,6 +70,7 @@ public class MainController {
         CalendarSource calendarSource = new CalendarSource("Hospital");
         calendarSource.getCalendars().add(citasCalendar);
         calendarView.getCalendarSources().add(calendarSource);
+        calendarView.setShowAddCalendarButton(false);
 
         //Cargamos las citas
         cargarCitas(citasCalendar, paciente);

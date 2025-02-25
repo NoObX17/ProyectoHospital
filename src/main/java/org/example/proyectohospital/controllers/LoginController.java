@@ -1,13 +1,13 @@
-package org.example.proyectohospital;
+package org.example.proyectohospital.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import org.example.proyectohospital.database.JDBC;
+import org.example.proyectohospital.PacienteSession;
 import org.example.proyectohospital.models.Paciente;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.example.proyectohospital.RegisterController.hashearPass;
+import static org.example.proyectohospital.controllers.RegisterController.hashearPass;
 
 
 public class LoginController {
@@ -77,7 +77,7 @@ public class LoginController {
         // Cargamos la otra escena
         try {
             // Load the new scene
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyectohospital/main.fxml"));
             Parent root = loader.load();
 
             // Get current stage
@@ -98,7 +98,7 @@ public class LoginController {
         // Cargamos la otra escena
         try {
             // Load the new scene
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("register.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyectohospital/register.fxml"));
             Parent root = loader.load();
 
             // Get current stage

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane stylesheets="@styles/styles.css" xmlns="http://javafx.com/javafx/17.0.12"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.MainController">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.controllers.MainController">
 
     <center>
         <TabPane>
@@ -67,8 +67,8 @@
             </Tab>
             <Tab closable="false" text="Mi Usuario">
                 <AnchorPane>
-                    <VBox fx:id="usuarioVBox" alignment="CENTER" spacing="10" AnchorPane.leftAnchor="10"
-                          AnchorPane.rightAnchor="10" AnchorPane.topAnchor="50">
+                    <VBox fx:id="usuarioVBox" styleClass="tarjeta-usuario" alignment="CENTER" spacing="10" AnchorPane.leftAnchor="600"
+                          AnchorPane.rightAnchor="600" AnchorPane.topAnchor="50">
                     </VBox>
                     <!-- Botón para editar -->
                     <Button onAction="#handleEditarButtonAction" text="Editar" AnchorPane.leftAnchor="700"

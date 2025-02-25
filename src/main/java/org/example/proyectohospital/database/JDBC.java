@@ -1,4 +1,4 @@
-package org.example.proyectohospital;
+package org.example.proyectohospital.database;
 
 
 import java.sql.Connection;

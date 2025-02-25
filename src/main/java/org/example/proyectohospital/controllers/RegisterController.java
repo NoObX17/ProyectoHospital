@@ -1,4 +1,4 @@
-package org.example.proyectohospital;
+package org.example.proyectohospital.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
+import org.example.proyectohospital.database.JDBC;
 
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -68,7 +69,7 @@ public class RegisterController {
         // Cargamos la otra escena
         try {
             // Load the new scene
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyectohospital/login.fxml"));
             Parent root = loader.load();
 
             // Get current stage
