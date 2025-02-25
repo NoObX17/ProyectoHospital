@@ -3,9 +3,12 @@ package org.example.proyectohospital;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Objects;
 
 public class Inicio extends Application {
     @Override
@@ -15,7 +18,9 @@ public class Inicio extends Application {
 
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);
-            primaryStage.setTitle("Login");
+            Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/org/example/proyectohospital/images/logohospital.png")));
+            primaryStage.getIcons().add(icon);
+            primaryStage.setTitle("Ferreret Pacientes");
             primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();
