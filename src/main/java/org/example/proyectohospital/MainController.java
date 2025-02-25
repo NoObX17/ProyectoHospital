@@ -4,6 +4,7 @@ import com.calendarfx.model.Calendar;
 import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
 import com.calendarfx.view.CalendarView;
+import com.calendarfx.view.DateControl;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Dialog;
@@ -12,16 +13,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import org.example.proyectohospital.models.Cita;
 import org.example.proyectohospital.models.Paciente;
 
 
 import java.awt.Desktop;
 import java.net.URI;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -41,7 +40,6 @@ public class MainController {
     @FXML
     public void initialize() {
         Paciente paciente = PacienteSession.getCurrentUser();
-        CalendarView calendarView = new CalendarView();
 
         bienvenidaLabel.setText("Bienvenido/a " + paciente.getNombre() + "!");
 
@@ -87,6 +85,24 @@ public class MainController {
             }
         });
 
+        // Manejar clic derecho en las entradas del calendario
+        calendarView.setEntryContextMenuCallback(new Callback<>() {
+            @Override
+            public ContextMenu call(DateControl.EntryContextMenuParameter param) {
+                Entry<?> entry = param.getEntry();
+                ContextMenu contextMenu = new ContextMenu();
+
+                MenuItem reprogramarItem = new MenuItem("Reprogramar");
+                reprogramarItem.setOnAction(e -> reprogramarCita(entry, paciente));
+
+                MenuItem cancelarItem = new MenuItem("Cancelar");
+                cancelarItem.setOnAction(e -> cancelarCita(entry));
+
+                contextMenu.getItems().addAll(reprogramarItem, cancelarItem);
+                return contextMenu;
+            }
+        });
+
         // Añadir el CalendarView al AnchorPane
         AnchorPane.setTopAnchor(calendarView, 0.0);
         AnchorPane.setBottomAnchor(calendarView, 0.0);
@@ -108,6 +124,11 @@ public class MainController {
         ComboBox<String> selectMedicos = new ComboBox<>();
         Map<Integer, String> listaMedicos = obtenerMedicos();
         selectMedicos.getItems().addAll(listaMedicos.values());
+
+        // Deshabilitar la selección del doctor si la cita ya existe
+        if (entrada.getUserObject() != null) {
+            selectMedicos.setDisable(true);
+        }
 
         DatePicker fechaPicker = new DatePicker();
         fechaPicker.setValue(LocalDate.now());
@@ -138,7 +159,7 @@ public class MainController {
                     LocalDateTime fechayhora = LocalDateTime.of(fecha, hora);
 
                     // Actualizar la entrada del calendario
-                    entrada.setInterval(fechayhora);
+                    entrada.setInterval(fechayhora, fechayhora.plusMinutes(15));
                     entrada.setLocation("Hospital Ferreret");
                     String estado = "Programada";
 
@@ -152,9 +173,12 @@ public class MainController {
                         }
                     }
 
-                    // Guardar la cita en la base de datos
-                    Cita cita = new Cita(paciente.getId(), idMedico, fechayhora, estado);
-                    guardarCitaEnBD(cita);
+                    // Solo guardar la cita en la base de datos si es una nueva cita
+                    if (entrada.getUserObject() == null) {
+                        // Guardar la cita en la base de datos
+                        Cita cita = new Cita(paciente.getId(), idMedico, fechayhora, estado);
+                        guardarCitaEnBD(cita, entrada);
+                    }
 
                     return true; // Cita confirmada
                 } catch (Exception e) {
@@ -169,6 +193,8 @@ public class MainController {
         Optional<Boolean> result = dialog.showAndWait();
         return result.orElse(false); // Devuelve false si el usuario cierra el diálogo sin confirmar
     }
+
+
 
     private boolean validarFormatoHora(String hora) {
         // Expresión regular para validar el formato HH:mm
@@ -206,11 +232,10 @@ public class MainController {
         return medicos;
     }
 
-    private void guardarCitaEnBD(Cita cita) {
+    private void guardarCitaEnBD(Cita cita, Entry<String> entry) {
         String sql = "INSERT INTO Citas (ID_Paciente, ID_Medico, Fecha_Cita, Hora_Cita, Estado) VALUES (?, ?, ?, ?, ?)";
-
         try (Connection conn = JDBC.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setInt(1, cita.getIdPaciente());
             pstmt.setInt(2, cita.getIdMedico());
@@ -218,14 +243,64 @@ public class MainController {
             pstmt.setTime(4, java.sql.Time.valueOf(cita.getFechaHora().toLocalTime()));
             pstmt.setString(5, cita.getEstado());
 
+            int affectedRows = pstmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        String idCita = String.valueOf(generatedKeys.getInt(1));
+                        entry.setUserObject(idCita); // Almacenar el ID_Cita como cadena
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void reprogramarCita(Entry<?> entrada, Paciente paciente) {
+        if (entrada instanceof Entry) {
+            Entry<String> citaEntrada = (Entry<String>) entrada;
+            boolean citaConfirmada = abrirFormularioCita(citaEntrada, paciente);
+            if (citaConfirmada) {
+                // Obtener el ID_Cita del userObject del entry
+                String idCita = (String) citaEntrada.getUserObject();
+                // Actualizar la cita en la base de datos
+                String sql = "UPDATE Citas SET Fecha_Cita = ?, Hora_Cita = ?, Estado = ? WHERE ID_Cita = ?";
+                try (Connection conn = JDBC.getConnection();
+                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                    pstmt.setDate(1, java.sql.Date.valueOf(citaEntrada.getStartDate())); // Fecha de la cita
+                    pstmt.setTime(2, java.sql.Time.valueOf(citaEntrada.getStartTime())); // Hora de la cita
+                    pstmt.setString(3, "Reprogramada"); // Estado de la cita
+                    pstmt.setString(4, idCita); // Usar el ID_Cita como cadena
+                    pstmt.executeUpdate();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+
+    private void cancelarCita(Entry<?> entrada) {
+        // Obtener el ID_Cita del userObject del entry
+        String idCita = (String) entrada.getUserObject();
+        // Cambiar el estado de la cita a "Cancelada"
+        String sql = "UPDATE Citas SET Estado = 'Cancelada' WHERE ID_Cita = ?";
+        try (Connection conn = JDBC.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, idCita); // Usar el ID_Cita como cadena
             pstmt.executeUpdate();
+            entrada.setTitle("Cita médico - Cancelada"); // Opcional: cambiar el título en el calendario
+            entrada.setCalendar(null); // Opcional: remover visualmente la cita del calendario
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     private void cargarCitas(Calendar citasCalendar, Paciente paciente) {
-        String query = "SELECT * FROM Citas WHERE ID_Paciente = ?"; // Consulta corregida
+        String query = "SELECT * FROM Citas WHERE ID_Paciente = ? AND Estado != 'Cancelada'";
 
         try (Connection conn = JDBC.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -234,16 +309,20 @@ public class MainController {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                int idCita = rs.getInt("ID_Cita");
+                String idCita = rs.getString("ID_Cita"); // Obtener el ID como cadena
                 LocalDate fecha = rs.getDate("Fecha_Cita").toLocalDate();
                 LocalTime hora = rs.getTime("Hora_Cita").toLocalTime();
                 LocalDateTime fechaHora = LocalDateTime.of(fecha, hora); // Combinar fecha y hora
 
                 // Crear una entrada para el calendario
                 Entry<String> citaEntry = new Entry<>("Cita #" + idCita);
-                citaEntry.setInterval(fechaHora); // Establecer la fecha y hora de la cita
+                citaEntry.setInterval(fecha);
+                citaEntry.setInterval(hora, hora.plusMinutes(15)); // Establecer la fecha y hora de la cita
                 citaEntry.setLocation("Hospital Ferreret");
-                citaEntry.setCalendar(citasCalendar); // Asignar la entrada al calendario de citas
+                citaEntry.setUserObject(idCita); // Almacenar el ID_Cita en userObject
+
+                // Asignar la entrada al calendario de citas
+                citaEntry.setCalendar(citasCalendar);
 
                 // Opcional: Añadir detalles adicionales a la entrada
                 citaEntry.setTitle("Cita médico");
@@ -252,6 +331,7 @@ public class MainController {
             e.printStackTrace();
         }
     }
+
 
     @FXML
     private void handleEditarButtonAction() {
