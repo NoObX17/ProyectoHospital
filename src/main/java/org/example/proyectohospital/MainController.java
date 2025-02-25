@@ -10,6 +10,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.example.proyectohospital.models.Cita;
 import org.example.proyectohospital.models.Paciente;
@@ -32,6 +33,7 @@ public class MainController {
 
     @FXML public AnchorPane paneCalendar;
     @FXML private VBox usuarioVBox;
+    @FXML private VBox historialContainer;
 
     private CalendarView calendarView;
     private Calendar citasCalendar;
@@ -54,6 +56,9 @@ public class MainController {
         usuarioVBox.getChildren().add(new Label("Teléfono: " + paciente.getTelefono()));
         usuarioVBox.getChildren().add(new Label("Dirección: " + paciente.getDireccion()));
         usuarioVBox.getChildren().add(new Label("Correo: " + paciente.getCorreo()));
+
+        // Cargar el historial médico del paciente
+        cargarHistorialMedico(paciente);
     }
 
     private void configurarCalendario(Paciente paciente) {
@@ -312,6 +317,61 @@ public class MainController {
         usuarioVBox.getChildren().add(new Label("Teléfono: " + paciente.getTelefono()));
         usuarioVBox.getChildren().add(new Label("Dirección: " + paciente.getDireccion()));
         usuarioVBox.getChildren().add(new Label("Correo: " + paciente.getCorreo()));
+    }
+
+    private void cargarHistorialMedico(Paciente paciente) {
+        String query = "SELECT Fecha_Visita, Diagnóstico, Tratamiento FROM Historial_Medico WHERE ID_Paciente = ?";
+
+        try (Connection conn = JDBC.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setInt(1, paciente.getId());
+            ResultSet rs = pstmt.executeQuery();
+
+            // Limpiar el contenedor antes de añadir nuevas tarjetas
+            historialContainer.getChildren().clear();
+
+            while (rs.next()) {
+                String fechaVisita = rs.getDate("Fecha_Visita").toString();
+                String diagnostico = rs.getString("Diagnóstico");
+                String tratamiento = rs.getString("Tratamiento");
+
+                // Crear una tarjeta para cada entrada del historial
+                HBox tarjeta = crearTarjetaHistorial(fechaVisita, diagnostico, tratamiento);
+                historialContainer.getChildren().add(tarjeta);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Método para crear una tarjeta de historial médico
+    private HBox crearTarjetaHistorial(String fechaVisita, String diagnostico, String tratamiento) {
+        HBox tarjeta = new HBox(15);
+        tarjeta.getStyleClass().add("tarjeta-historial");
+
+        // Contenido de la tarjeta
+        VBox contenido = new VBox(10);
+        contenido.getChildren().addAll(
+                new Label("Fecha de Visita: " + fechaVisita) {{
+                    getStyleClass().add("titulo-historial");
+                }},
+                new Label("Diagnóstico:") {{
+                    getStyleClass().add("subtitulo-historial");
+                }},
+                new Label(diagnostico) {{
+                    getStyleClass().add("contenido-historial");
+                }},
+                new Label("Tratamiento:") {{
+                    getStyleClass().add("subtitulo-historial");
+                }},
+                new Label(tratamiento) {{
+                    getStyleClass().add("contenido-historial");
+                }}
+        );
+
+        tarjeta.getChildren().add(contenido);
+        return tarjeta;
     }
 
     @FXML

@@ -22,15 +22,12 @@
                             </FlowPane.margin>
                         </Label>
                     </FlowPane>
-
-                    <!-- Contenedor de noticias -->
                     <VBox alignment="CENTER" layoutY="140" spacing="20" AnchorPane.leftAnchor="20.0"
                           AnchorPane.rightAnchor="20.0">
                         <Label styleClass="noticias" text="Noticias de interés"/>
                         <Separator styleClass="separator"/>
                         <HBox alignment="CENTER" layoutY="140" spacing="20" AnchorPane.leftAnchor="20.0"
                               AnchorPane.rightAnchor="20.0">
-                            <!-- Noticia 1 -->
                             <VBox spacing="15">
                                 <ImageView fitHeight="133.0" fitWidth="242.0" preserveRatio="true">
                                     <Image url="@images/vacunas.png"/>
@@ -42,8 +39,6 @@
                                            wrapText="true"/>
                                 </VBox>
                             </VBox>
-
-                            <!-- Noticia 2 -->
                             <VBox spacing="15">
                                 <ImageView fitHeight="150" fitWidth="200" preserveRatio="true">
                                     <Image url="@images/robot.png"/>
@@ -55,8 +50,6 @@
                                            wrapText="true"/>
                                 </VBox>
                             </VBox>
-
-                            <!-- Noticia 3 -->
                             <VBox spacing="15">
                                 <ImageView fitHeight="150" fitWidth="200" preserveRatio="true">
                                     <Image url="@images/mental.png"/>
@@ -70,7 +63,6 @@
                             </VBox>
                         </HBox>
                     </VBox>
-
                 </AnchorPane>
             </Tab>
             <Tab closable="false" text="Mi Usuario">
@@ -85,6 +77,10 @@
             </Tab>
             <Tab closable="false" text="Historial Médico">
                 <AnchorPane>
+                    <ScrollPane fitToWidth="true" AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.bottomAnchor="20.0">
+                        <!-- Contenedor principal para las tarjetas -->
+                        <VBox fx:id="historialContainer" spacing="20" />
+                    </ScrollPane>
                 </AnchorPane>
             </Tab>
             <Tab closable="false" text="Gestión de Citas">

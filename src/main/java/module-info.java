@@ -8,5 +8,6 @@ module org.example.proyectohospital {
     requires java.desktop;
 
     opens org.example.proyectohospital to javafx.fxml;
+    opens org.example.proyectohospital.models to javafx.base;
     exports org.example.proyectohospital;
 }

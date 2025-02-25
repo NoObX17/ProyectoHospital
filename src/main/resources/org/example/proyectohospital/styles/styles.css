@@ -167,3 +167,55 @@
     -fx-pref-height: 4;
     -fx-border-color: null ;
 }
+
+/* Estilos para las tarjetas de historial médico */
+.tarjeta-historial {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);
+}
+
+.titulo-historial {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.subtitulo-historial {
+    -fx-font-size: 14px;
+    -fx-text-fill: #7f8c8d;
+}
+
+.contenido-historial {
+    -fx-font-size: 14px;
+    -fx-text-fill: #34495e;
+    -fx-wrap-text: true;
+}
+
+/* Estilos para el ScrollPane */
+.scroll-pane {
+    -fx-background-color: transparent; /* Fondo transparente */
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent; /* Fondo transparente */
+}
+
+.scroll-bar:vertical {
+    -fx-background-color: transparent; /* Color de fondo de la barra de desplazamiento */
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #7F8C8D; /* Color del "thumb" (barra deslizante) */
+    -fx-background-radius: 5px; /* Bordes redondeados */
+}
+
+/* Flechas scroll */
+.scroll-bar:vertical .increment-button,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 0 0;
+}
