@@ -22,16 +22,26 @@ import java.util.Base64;
 
 public class RegisterController {
 
-    @FXML private TextField nombreField;
-    @FXML private TextField apellidosField;
-    @FXML private DatePicker fechaNacimientoPicker;
-    @FXML private TextField dniField;
-    @FXML private TextField telefonoField;
-    @FXML private TextField direccionField;
-    @FXML private TextField correoField;
-    @FXML private PasswordField contrasenaField;
-    @FXML private Label loginLabel;
+    @FXML
+    private TextField nombreField;
+    @FXML
+    private TextField apellidosField;
+    @FXML
+    private DatePicker fechaNacimientoPicker;
+    @FXML
+    private TextField dniField;
+    @FXML
+    private TextField telefonoField;
+    @FXML
+    private TextField direccionField;
+    @FXML
+    private TextField correoField;
+    @FXML
+    private PasswordField contrasenaField;
+    @FXML
+    private Label loginLabel;
 
+    // Metodo con el comportamiento del boton de Register
     @FXML
     private void handleRegisterButtonAction() {
         String nombre = nombreField.getText();
@@ -64,27 +74,25 @@ public class RegisterController {
             e.printStackTrace();
         }
     }
+
     @FXML
     private void goLogin() {
-        // Cargamos la otra escena
+        // Cargamos la escena del login y la mostramos
         try {
-            // Load the new scene
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyectohospital/login.fxml"));
             Parent root = loader.load();
 
-            // Get current stage
             Stage stage = (Stage) loginLabel.getScene().getWindow();
 
-            // Set new scene
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            // Handle exception (e.g., show error message to user)
         }
     }
 
+    // Metodo para crear el hash de la contraseña
     public static String hashearPass(String password) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");

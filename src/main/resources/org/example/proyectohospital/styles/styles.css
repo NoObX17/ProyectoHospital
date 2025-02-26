@@ -1,22 +1,22 @@
 @font-face {
     font-family: 'Montserrat';
-    src: url("../fonts/Montserrat-Regular.ttf");/* Ruta del archivo .ttf */
+    src: url("../fonts/Montserrat-Regular.ttf");
 }
 
 /* Estilos generales */
 .root {
     -fx-font-family: 'Montserrat';
-    -fx-background-color: #e0f7fa; /* Un color suave y relajante */
+    -fx-background-color: #e0f7fa;
 }
 
-/* Estilos para el VBox principal */
+/* Estilos del VBox principal */
 .vbox {
     -fx-padding: 20;
     -fx-spacing: 10;
     -fx-alignment: center;
 }
 
-/* Estilos para el GridPane */
+/* Estilos del GridPane */
 .grid-pane {
     -fx-hgap: 10;
     -fx-vgap: 10;
@@ -35,6 +35,7 @@
     -fx-font-weight: bold;
 }
 
+/* Estilos mensaje de error */
 .errormessage {
     -fx-text-fill: red;
 }
@@ -50,13 +51,13 @@
 }
 
 .text-field:focused, .password-field:focused {
-    -fx-border-color: #00bcd4; /* Borde más llamativo al enfocar */
+    -fx-border-color: #00bcd4;
 }
 
-/* Estilos para el botón de registro */
+/* Estilos para botones */
 .button {
     -fx-font-size: 14px;
-    -fx-background-color: #1ca381; /* Color de botón temático */
+    -fx-background-color: #1ca381;
     -fx-text-fill: #ffffff;
     -fx-background-radius: 5;
     -fx-border-radius: 5;
@@ -65,7 +66,7 @@
 }
 
 .button:hover {
-    -fx-background-color: #008F6F; /* Color más oscuro al pasar el mouse */
+    -fx-background-color: #008F6F;
 }
 
 /* Estilos para el título */
@@ -77,7 +78,7 @@
 }
 
 
-/* Estilos para íconos o imágenes (opcional) */
+/* Estilos para íconos */
 .icon {
     -fx-fill: #008F6F;
     -fx-cursor: hand;
@@ -87,28 +88,28 @@
     -fx-opacity: 0.8;
 }
 
-/* Estilos para el DatePicker */
+/* Estilos para el selector de fechas */
 .date-picker {
     -fx-font-size: 14px;
     -fx-background-color: #ffffff;
-    -fx-border-color: #b2ebf2; /* Borde suave */
+    -fx-border-color: #b2ebf2;
     -fx-border-width: 1;
     -fx-border-radius: 5;
     -fx-padding: 5;
 }
 
 .date-picker .arrow-button {
-    -fx-background-color: #1ca381; /* Color de botón temático */
+    -fx-background-color: #1ca381;
     -fx-background-radius: 5;
 }
 
 .date-picker .arrow-button:hover {
-    -fx-background-color: #008F6F; /* Color más oscuro al pasar el mouse */
+    -fx-background-color: #008F6F;
 }
 
 .date-picker .text-field {
     -fx-background-color: #ffffff;
-    -fx-border-color: #b2ebf2; /* Borde suave */
+    -fx-border-color: #b2ebf2;
     -fx-border-width: 1;
     -fx-border-radius: 5;
     -fx-padding: 5;
@@ -116,7 +117,7 @@
 
 .link:hover {
     -fx-font-size: 14px;
-    -fx-text-fill: #1ca381; /* Color de texto oscuro y relajante */
+    -fx-text-fill: #1ca381;
     -fx-font-weight: bold;
 }
 
@@ -126,20 +127,22 @@
     -fx-tab-max-width: 120px;
     -fx-tab-min-height: 40px;
     -fx-tab-max-height: 40px;
-    -fx-background-color: #e0f7fa; /* Fondo suave para las pestañas */
+    -fx-background-color: #e0f7fa;
 }
 
+/* Estilo para la pestaña */
 .tab {
-    -fx-background-color: #1ca381; /* Color de fondo de las pestañas */
-    -fx-text-fill: white; /* Color del texto de las pestañas */
+    -fx-background-color: #1ca381;
+    -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
 
 .tab:selected {
-    -fx-background-color: #008F6F; /* Color de fondo de la pestaña seleccionada */
+    -fx-background-color: #008F6F;
 }
 
+/* Estilo para mensaje de bienvenida */
 .bienvenida {
     -fx-font-size: 24px;
 }
@@ -166,16 +169,17 @@
 .separator .line {
     -fx-background-color: #008F6F;
     -fx-pref-height: 4;
-    -fx-border-color: null ;
+    -fx-border-color: null;
 }
 
+/* Estilo tarjeta de datos de usuario*/
 .tarjeta-usuario {
     -fx-background-color: #ffffff;
     -fx-border-color: #bdc3c7;
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
     -fx-padding: 15px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 0);
 }
 
 /* Estilos para las tarjetas de historial médico */
@@ -185,7 +189,7 @@
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
     -fx-padding: 15px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 0);
 }
 
 .titulo-historial {
@@ -208,8 +212,9 @@
 /* Estilos para el ScrollPane */
 /* Fondo transparente */
 .scroll-pane {
-    -fx-background-color: transparent; /* Fondo transparente */
+    -fx-background-color: transparent;
 }
+
 .scroll-pane .viewport {
     -fx-background-color: transparent;
 }
@@ -245,38 +250,38 @@
 
 /* Estilo del botón desplegable */
 .combo-box .arrow-button {
-    -fx-background-color: #ffffff; /* Color de fondo del botón */
-    -fx-background-radius: 0 5px 5px 0; /* Bordes redondeados solo en el lado derecho */
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 0 5px 5px 0;
 }
 
 /* Estilo de la flecha del ComboBox */
 .combo-box .arrow {
-    -fx-background-color: #008F6F; /* Color de la flecha */
+    -fx-background-color: #008F6F;
 }
 
 /* Estilo del ComboBox cuando está abierto */
 .combo-box .list-view {
-    -fx-background-color: #ffffff; /* Fondo de la lista desplegable */
-    -fx-border-color: #bdc3c7; /* Color del borde de la lista */
-    -fx-border-radius: 5px; /* Bordes redondeados para la lista */
-    -fx-background-radius: 5px; /* Bordes redondeados para el fondo de la lista */
+    -fx-background-color: #ffffff;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
 }
 
 /* Estilo de los elementos de la lista desplegable */
 .combo-box .list-cell {
-    -fx-background-color: #ffffff; /* Fondo de los elementos */
-    -fx-text-fill: #2c3e50; /* Color del texto de los elementos */
-    -fx-padding: 5px; /* Espaciado interno de los elementos */
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 5px;
 }
 
 /* Estilo de los elementos de la lista desplegable cuando están seleccionados */
 .combo-box .list-cell:filled:selected {
-    -fx-background-color: #ffffff; /* Fondo del elemento seleccionado */
-    -fx-text-fill: #008F6F; /* Color del texto del elemento seleccionado */
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #008F6F;
 }
 
 /* Estilo de los elementos de la lista desplegable cuando están hover */
 .combo-box .list-cell:filled:hover {
-    -fx-background-color: #ffffff; /* Fondo del elemento al pasar el mouse */
-    -fx-text-fill: #008F6F; /* Color del texto al pasar el mouse */
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #008F6F;
 }

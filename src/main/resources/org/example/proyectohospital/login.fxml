@@ -5,25 +5,29 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" fillWidth="false" prefHeight="400.0" prefWidth="600.0" spacing="10.0" stylesheets="@styles/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectohospital.controllers.LoginController">
+<VBox alignment="CENTER" fillWidth="false" prefHeight="400.0" prefWidth="600.0" spacing="10.0"
+      stylesheets="@styles/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.proyectohospital.controllers.LoginController">
     <ImageView fitHeight="111.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true">
-        <Image url="@images/logohospital.png" />
+        <Image url="@images/logohospital.png"/>
     </ImageView>
-    <Label styleClass="title" text="Inicio de Sesión" />
+    <Label styleClass="title" text="Inicio de Sesión"/>
     <GridPane styleClass="grid-pane">
-        <Label styleClass="label" text="Correo:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <TextField fx:id="correoField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <Label styleClass="label" text="Correo:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="correoField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
-        <Label styleClass="label" text="Contraseña:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <PasswordField fx:id="contrasenaField" styleClass="password-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Label styleClass="label" text="Contraseña:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <PasswordField fx:id="contrasenaField" styleClass="password-field" GridPane.columnIndex="1"
+                       GridPane.rowIndex="1"/>
         <VBox.margin>
-            <Insets left="120.0" right="120.0" />
+            <Insets left="120.0" right="120.0"/>
         </VBox.margin>
     </GridPane>
     <Label styleClass="errormessage" fx:id="loginErrorLabel" visible="false"/>
     <Button fx:id="loginButton" onAction="#handleLoginButtonAction" styleClass="button" text="Inicia">
-      <VBox.margin>
-         <Insets top="7.0" />
-      </VBox.margin></Button>
-    <Label fx:id="registerLabel" styleClass="link" onMouseClicked="#goRegister" text="No tienes cuenta? Registrate" />
+        <VBox.margin>
+            <Insets top="7.0"/>
+        </VBox.margin>
+    </Button>
+    <Label fx:id="registerLabel" styleClass="link" onMouseClicked="#goRegister" text="No tienes cuenta? Registrate"/>
 </VBox>

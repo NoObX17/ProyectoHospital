@@ -39,5 +39,5 @@
       </VBox.margin>
     </GridPane>
     <Button onAction="#handleRegisterButtonAction" styleClass="button" text="Registrar" />
-    <Label fx:id="loginLabel" styleClass="link" onMouseClicked="#goLogin" text="Ya tienes cuenta? Log-in" />
+    <Label fx:id="loginLabel" styleClass="link" onMouseClicked="#goLogin" text="Ya tienes cuenta? Log-in"/>
 </VBox>

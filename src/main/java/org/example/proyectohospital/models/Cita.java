@@ -2,14 +2,15 @@ package org.example.proyectohospital.models;
 
 import java.time.LocalDateTime;
 
+// Modelo de clase Cita basado en la tabla de base de datos
 public class Cita {
     private int id;
     private int idPaciente;
     private int idMedico;
     private LocalDateTime fechaHora;
-    private String estado; // Programada, Cancelada, Reprogramada
+    private String estado;
 
-    // Constructor, getters y setters
+    // Constructor
     public Cita(int idPaciente, int idMedico, LocalDateTime fechaHora, String estado) {
         this.idPaciente = idPaciente;
         this.idMedico = idMedico;
@@ -17,41 +18,20 @@ public class Cita {
         this.estado = estado;
     }
 
-    // Getters y setters
-
-    public int getId() {
-        return id;
-    }
-
+    // Getters
     public int getIdPaciente() {
         return idPaciente;
-    }
-
-    public void setIdPaciente(int idPaciente) {
-        this.idPaciente = idPaciente;
     }
 
     public int getIdMedico() {
         return idMedico;
     }
 
-    public void setIdMedico(int idMedico) {
-        this.idMedico = idMedico;
-    }
-
     public LocalDateTime getFechaHora() {
         return fechaHora;
     }
 
-    public void setFechaHora(LocalDateTime fechaHora) {
-        this.fechaHora = fechaHora;
-    }
-
     public String getEstado() {
         return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
     }
 }

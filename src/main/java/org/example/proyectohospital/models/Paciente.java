@@ -2,6 +2,7 @@ package org.example.proyectohospital.models;
 
 import java.util.Date;
 
+// Modelo de clase Paciente basado en la base de datos
 public class Paciente {
     private int id;
     private String nombre;
@@ -12,6 +13,7 @@ public class Paciente {
     private String direccion;
     private String correo;
 
+    // Constructor
     public Paciente(int id, String nombre, String apellidos, Date fechaNacimiento, String DNI, String telefono,
                     String direccion, String correo) {
         this.id = id;
@@ -24,44 +26,25 @@ public class Paciente {
         this.correo = correo;
     }
 
+    // Getters y setters
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public String getApellidos() {
         return apellidos;
-    }
-
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
     }
 
     public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
     public String getDNI() {
         return DNI;
-    }
-
-    public void setDNI(String DNI) {
-        this.DNI = DNI;
     }
 
     public String getTelefono() {

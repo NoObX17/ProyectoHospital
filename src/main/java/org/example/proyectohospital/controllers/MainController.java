@@ -22,7 +22,6 @@ import org.example.proyectohospital.models.Cita;
 import org.example.proyectohospital.models.HistorialMedico;
 import org.example.proyectohospital.models.Paciente;
 
-
 import java.awt.Desktop;
 import java.net.URI;
 import java.sql.*;
@@ -35,11 +34,16 @@ public class MainController {
 
     public Label bienvenidaLabel;
 
-    @FXML public AnchorPane paneCalendar;
-    @FXML private VBox usuarioVBox;
-    @FXML private TextField busquedaField;
-    @FXML private ComboBox<String> filtroComboBox;
-    @FXML private VBox historialContainer;
+    @FXML
+    public AnchorPane paneCalendar;
+    @FXML
+    private VBox usuarioVBox;
+    @FXML
+    private TextField busquedaField;
+    @FXML
+    private ComboBox<String> filtroComboBox;
+    @FXML
+    private VBox historialContainer;
 
     private CalendarView calendarView;
     private Calendar citasCalendar;
@@ -47,14 +51,14 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        Paciente paciente = PacienteSession.getCurrentUser();
+        Paciente paciente = PacienteSession.getCurrentUser(); // Obtenemos la sesion del paciente
 
         bienvenidaLabel.setText("Bienvenido/a " + paciente.getNombre() + "!");
 
-        // paneCalendar
+        // Configuracion del calendario
         configurarCalendario(paciente);
 
-        // Mostrar los datos del paciente en usuarioVBox
+        // Mostramos los datos del paciente en la tarjeta usuarioVBox
         usuarioVBox.getChildren().clear();
         usuarioVBox.getChildren().add(new Label("Nombre y Apellidos: " + paciente.getNombre() + " " + paciente.getApellidos()));
         usuarioVBox.getChildren().add(new Label("Fecha de Nacimiento: " + paciente.getFechaNacimiento().toString()));
@@ -63,17 +67,85 @@ public class MainController {
         usuarioVBox.getChildren().add(new Label("Dirección: " + paciente.getDireccion()));
         usuarioVBox.getChildren().add(new Label("Correo: " + paciente.getCorreo()));
 
-        // Cargar el historial médico completo
+        // Cargamos el historial médico completo
         cargarHistorialMedico(PacienteSession.getCurrentUser());
 
-        // Configurar el ComboBox de filtrado
+        // Configuramos el filtrado del historial
         filtroComboBox.getSelectionModel().selectFirst(); // Seleccionar el primer filtro por defecto
 
-        // Escuchar cambios en el campo de búsqueda y el ComboBox
+        // Escuchamos los cambios en el campo de búsqueda y el ComboBox para el filtrado dinamico
         busquedaField.textProperty().addListener((observable, oldValue, newValue) -> filtrarHistorial());
         filtroComboBox.valueProperty().addListener((observable, oldValue, newValue) -> filtrarHistorial());
     }
 
+    @FXML
+    private void handleEditarButtonAction() {
+        abrirVentanaEdicion();
+    }
+
+    private void abrirVentanaEdicion() {
+        Paciente paciente = PacienteSession.getCurrentUser();
+
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Editar Datos");
+        dialog.setHeaderText("Editar teléfono, dirección o correo");
+
+        // Creacion de los campos de texto para editar
+        TextField telefonoField = new TextField(paciente.getTelefono());
+        TextField direccionField = new TextField(paciente.getDireccion());
+        TextField correoField = new TextField(paciente.getCorreo());
+
+        VBox vbox = new VBox(10,
+                new Label("Teléfono:"), telefonoField,
+                new Label("Dirección:"), direccionField,
+                new Label("Correo:"), correoField
+        );
+
+        dialog.getDialogPane().setContent(vbox);
+        dialog.getDialogPane().getStylesheets().add(getClass().getResource("/org/example/proyectohospital/styles/styles.css").toExternalForm());
+
+        // Mostramos la ventana y esperamos a que el usuario rellene
+        dialog.showAndWait().ifPresent(response -> {
+            paciente.setTelefono(telefonoField.getText());
+            paciente.setDireccion(direccionField.getText());
+            paciente.setCorreo(correoField.getText());
+
+            // Guardamos cambios en la base de datos
+            actualizarInfoPaciente(paciente);
+
+            // Actualizamos la vista con los nuevos datos
+            actualizarVistaPaciente(paciente);
+        });
+    }
+
+    // Metodo para actualizar la base de datos con los nuevos datos del paciente
+    private void actualizarInfoPaciente(Paciente paciente) {
+        String query = "UPDATE Pacientes SET Teléfono = ?, Dirección = ?, Correo_Electrónico = ? WHERE ID_Paciente = ?";
+
+        try (Connection conn = JDBC.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, paciente.getTelefono());
+            pstmt.setString(2, paciente.getDireccion());
+            pstmt.setString(3, paciente.getCorreo());
+            pstmt.setInt(4, paciente.getId());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Metodo para mostrar los datos del paciente
+    private void actualizarVistaPaciente(Paciente paciente) {
+        usuarioVBox.getChildren().clear();
+        usuarioVBox.getChildren().add(new Label("Nombre y Apellidos: " + paciente.getNombre() + " " + paciente.getApellidos()));
+        usuarioVBox.getChildren().add(new Label("Fecha de Nacimiento: " + paciente.getFechaNacimiento().toString()));
+        usuarioVBox.getChildren().add(new Label("DNI: " + paciente.getDNI()));
+        usuarioVBox.getChildren().add(new Label("Teléfono: " + paciente.getTelefono()));
+        usuarioVBox.getChildren().add(new Label("Dirección: " + paciente.getDireccion()));
+        usuarioVBox.getChildren().add(new Label("Correo: " + paciente.getCorreo()));
+    }
+
+    // Metodo de configuracion del calendario
     private void configurarCalendario(Paciente paciente) {
         calendarView = new CalendarView();
         citasCalendar = new Calendar("Citas Médicas");
@@ -85,10 +157,10 @@ public class MainController {
         calendarView.getCalendarSources().add(calendarSource);
         calendarView.setShowAddCalendarButton(false);
 
-        //Cargamos las citas
+        // Cargamos las citas
         cargarCitas(citasCalendar, paciente);
 
-        // Configurar entradas de citas
+        // Configuramos las entradas de citas
         calendarView.setEntryFactory(param -> {
             Entry<String> newEntry = new Entry<>("Cita médico");
             newEntry.setInterval(LocalDate.now());
@@ -101,7 +173,7 @@ public class MainController {
             }
         });
 
-        // Manejar clic derecho en las entradas del calendario
+        // Uso de click derecho en las entradas del calendario
         calendarView.setEntryContextMenuCallback(new Callback<>() {
             @Override
             public ContextMenu call(DateControl.EntryContextMenuParameter param) {
@@ -119,7 +191,7 @@ public class MainController {
             }
         });
 
-        // Añadir el CalendarView al AnchorPane
+        // Añadimos el CalendarView al AnchorPane
         AnchorPane.setTopAnchor(calendarView, 0.0);
         AnchorPane.setBottomAnchor(calendarView, 0.0);
         AnchorPane.setLeftAnchor(calendarView, 0.0);
@@ -127,21 +199,22 @@ public class MainController {
         paneCalendar.getChildren().add(calendarView);
     }
 
+    // Metodo para el formulario de creacion de citas
     private boolean abrirFormularioCita(Entry<String> entrada, Paciente paciente) {
-        // Crear un diálogo simple para ingresar los datos de la cita
+        // Creamos un dialog para ingresar los datos de la cita
         Dialog<Boolean> dialog = new Dialog<>();
         dialog.setTitle("Nueva Cita Médica");
         dialog.setHeaderText("Ingrese los detalles de la cita");
 
-        // Botones del diálogo
+        // Botones del dialog
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
-        // Crear campos para el formulario
+        // Creamos campos para el formulario
         ComboBox<String> selectMedicos = new ComboBox<>();
         Map<Integer, String> listaMedicos = obtenerMedicos();
         selectMedicos.getItems().addAll(listaMedicos.values());
 
-        // Deshabilitar la selección del doctor si la cita ya existe
+        // Si la cita existe nos dejamos utilizar el select de medicos
         if (entrada.getUserObject() != null) {
             selectMedicos.setDisable(true);
         }
@@ -152,17 +225,17 @@ public class MainController {
         TextField horaField = new TextField();
         horaField.setPromptText("HH:mm");
 
-        // Añadir campos al diálogo
+        // Añadimos los campos al dialog junto con las Label
         dialog.getDialogPane().setContent(new VBox(10,
                 new Label("Doctor:"), selectMedicos,
                 new Label("Fecha:"), fechaPicker,
                 new Label("Hora (HH:mm):"), horaField
         ));
 
-        // Manejar el resultado del diálogo
+        // Obtencion de resultados del dialog
         dialog.setResultConverter(buttonType -> {
             if (buttonType == ButtonType.OK) {
-                // Validar el formato de la hora
+                // Validamos el formato de la hora
                 String horaTexto = horaField.getText();
                 if (!validarFormatoHora(horaTexto)) {
                     mostrarAlerta("Error", "Formato de hora incorrecto. Use HH:mm.", Alert.AlertType.ERROR);
@@ -171,15 +244,15 @@ public class MainController {
 
                 try {
                     LocalDate fecha = fechaPicker.getValue();
-                    LocalTime hora = LocalTime.parse(horaTexto); // Convertir la hora a LocalTime
+                    LocalTime hora = LocalTime.parse(horaTexto);
                     LocalDateTime fechayhora = LocalDateTime.of(fecha, hora);
 
-                    // Actualizar la entrada del calendario
-                    entrada.setInterval(fechayhora, fechayhora.plusMinutes(15));
+                    // Creamos la entrada del calendario
+                    entrada.setInterval(fechayhora, fechayhora.plusMinutes(15)); // Duración de la cita de 15 minutos
                     entrada.setLocation("Hospital Ferreret");
                     String estado = "Programada";
 
-                    // Obtener el médico seleccionado
+                    // Obtenemos el médico seleccionado
                     String medicoSeleccionado = selectMedicos.getValue();
                     int idMedico = -1;
                     for (Map.Entry<Integer, String> entry : listaMedicos.entrySet()) {
@@ -191,33 +264,31 @@ public class MainController {
 
                     // Solo guardar la cita en la base de datos si es una nueva cita
                     if (entrada.getUserObject() == null) {
-                        // Guardar la cita en la base de datos
+                        // Guardamos la cita en la base de datos
                         Cita cita = new Cita(paciente.getId(), idMedico, fechayhora, estado);
                         guardarCitaEnBD(cita, entrada);
                     }
-
-                    return true; // Cita confirmada
+                    return true;
                 } catch (Exception e) {
                     mostrarAlerta("Error", "Hora no válida. Use HH:mm.", Alert.AlertType.ERROR);
-                    return false; // No continuar si hay un error al parsear la hora
+                    return false;
                 }
             }
             return false; // Si el usuario cancela el diálogo
         });
 
-        // Mostrar el diálogo y devolver el resultado
+        // Mostramos el dialogo y esperamos el resultado
         Optional<Boolean> result = dialog.showAndWait();
         return result.orElse(false); // Devuelve false si el usuario cierra el diálogo sin confirmar
     }
 
-
-
+    // Metodo con una expresion regular para validar el formato en HH:mm
     private boolean validarFormatoHora(String hora) {
-        // Expresión regular para validar el formato HH:mm
         String regex = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$";
         return hora.matches(regex);
     }
 
+    // Metodo para mostrar la alerta en caso de fallo
     private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
         Alert alert = new Alert(tipo);
         alert.setTitle(titulo);
@@ -226,8 +297,9 @@ public class MainController {
         alert.showAndWait();
     }
 
+    // Metodo para obtener un Map de medicos con clave id y valor nombre apellidos - especialidad
     private Map<Integer, String> obtenerMedicos() {
-        Map<Integer, String> medicos = new HashMap<>(); // Usar un Map para clave-valor
+        Map<Integer, String> medicos = new HashMap<>();
         String query = "SELECT ID_Medico, Nombre, Apellidos, Especialidad FROM Medicos";
 
         try (Connection conn = JDBC.getConnection();
@@ -238,16 +310,16 @@ public class MainController {
                 int idMedico = rs.getInt("ID_Medico");
                 String nombreCompleto = rs.getString("Nombre") + " " + rs.getString("Apellidos");
                 String especialidad = rs.getString("Especialidad");
-                String medicoConEspecialidad = nombreCompleto + " - " + especialidad; // Formato: "Nombre Apellidos - Especialidad"
-                medicos.put(idMedico, medicoConEspecialidad); // Agregar al Map
+                String medicoConEspecialidad = nombreCompleto + " - " + especialidad;
+                medicos.put(idMedico, medicoConEspecialidad);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return medicos;
     }
 
+    // Metodo para guardar las citas en la base de datos
     private void guardarCitaEnBD(Cita cita, Entry<String> entry) {
         String sql = "INSERT INTO Citas (ID_Paciente, ID_Medico, Fecha_Cita, Hora_Cita, Estado) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = JDBC.getConnection();
@@ -265,7 +337,7 @@ public class MainController {
                 try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         String idCita = String.valueOf(generatedKeys.getInt(1));
-                        entry.setUserObject(idCita); // Almacenar el ID_Cita como cadena
+                        entry.setUserObject(idCita);
                     }
                 }
             }
@@ -274,21 +346,22 @@ public class MainController {
         }
     }
 
+    // Metodo con la logica para reprogramar una cita
     private void reprogramarCita(Entry<?> entrada, Paciente paciente) {
-        if (entrada instanceof Entry) {
+        if (entrada != null) {
             Entry<String> citaEntrada = (Entry<String>) entrada;
             boolean citaConfirmada = abrirFormularioCita(citaEntrada, paciente);
             if (citaConfirmada) {
-                // Obtener el ID_Cita del userObject del entry
+                // Obtenemos el ID_Cita almacenada en el userObject del entry
                 String idCita = (String) citaEntrada.getUserObject();
-                // Actualizar la cita en la base de datos
+                // Actualizamos la cita en la base de datos
                 String sql = "UPDATE Citas SET Fecha_Cita = ?, Hora_Cita = ?, Estado = ? WHERE ID_Cita = ?";
                 try (Connection conn = JDBC.getConnection();
                      PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                    pstmt.setDate(1, java.sql.Date.valueOf(citaEntrada.getStartDate())); // Fecha de la cita
-                    pstmt.setTime(2, java.sql.Time.valueOf(citaEntrada.getStartTime())); // Hora de la cita
-                    pstmt.setString(3, "Reprogramada"); // Estado de la cita
-                    pstmt.setString(4, idCita); // Usar el ID_Cita como cadena
+                    pstmt.setDate(1, java.sql.Date.valueOf(citaEntrada.getStartDate()));
+                    pstmt.setTime(2, java.sql.Time.valueOf(citaEntrada.getStartTime()));
+                    pstmt.setString(3, "Reprogramada");
+                    pstmt.setString(4, idCita);
                     pstmt.executeUpdate();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -297,50 +370,49 @@ public class MainController {
         }
     }
 
-
-
+    // Metodo con toda la logica para cancelar una cita
     private void cancelarCita(Entry<?> entrada) {
-        // Obtener el ID_Cita del userObject del entry
+        // Obtenemos el ID_Cita almacenada en el userObject del entry
         String idCita = (String) entrada.getUserObject();
-        // Cambiar el estado de la cita a "Cancelada"
+        // Cambiamos el estado de la cita a "Cancelada"
         String sql = "UPDATE Citas SET Estado = 'Cancelada' WHERE ID_Cita = ?";
         try (Connection conn = JDBC.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, idCita); // Usar el ID_Cita como cadena
+            pstmt.setString(1, idCita);
             pstmt.executeUpdate();
-            entrada.setTitle("Cita médico - Cancelada"); // Opcional: cambiar el título en el calendario
-            entrada.setCalendar(null); // Opcional: remover visualmente la cita del calendario
+            entrada.setCalendar(null); // Eliminamos la cita del calendario
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    // Metodo para cargar citas en el calendario
     private void cargarCitas(Calendar citasCalendar, Paciente paciente) {
+        // Seleccionamos las citas que no tengan el estado de "Cancelada"
         String query = "SELECT * FROM Citas WHERE ID_Paciente = ? AND Estado != 'Cancelada'";
 
         try (Connection conn = JDBC.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-            pstmt.setInt(1, paciente.getId()); // Asignar el ID del paciente al PreparedStatement
+            pstmt.setInt(1, paciente.getId());
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                String idCita = rs.getString("ID_Cita"); // Obtener el ID como cadena
+                String idCita = rs.getString("ID_Cita");
                 LocalDate fecha = rs.getDate("Fecha_Cita").toLocalDate();
                 LocalTime hora = rs.getTime("Hora_Cita").toLocalTime();
-                LocalDateTime fechaHora = LocalDateTime.of(fecha, hora); // Combinar fecha y hora
 
-                // Crear una entrada para el calendario
+                // Creamos una entrada para el calendario
                 Entry<String> citaEntry = new Entry<>("Cita #" + idCita);
                 citaEntry.setInterval(fecha);
-                citaEntry.setInterval(hora, hora.plusMinutes(15)); // Establecer la fecha y hora de la cita
+                citaEntry.setInterval(hora, hora.plusMinutes(15)); // Duracion de la cita de 15 minutos
                 citaEntry.setLocation("Hospital Ferreret");
-                citaEntry.setUserObject(idCita); // Almacenar el ID_Cita en userObject
+                citaEntry.setUserObject(idCita);
 
-                // Asignar la entrada al calendario de citas
+                // Añadimos la entrada al calenadrio
                 citaEntry.setCalendar(citasCalendar);
 
-                // Opcional: Añadir detalles adicionales a la entrada
+                // Ponemos titulo de la entrada
                 citaEntry.setTitle("Cita médico");
             }
         } catch (SQLException e) {
@@ -348,73 +420,7 @@ public class MainController {
         }
     }
 
-
-    @FXML
-    private void handleEditarButtonAction() {
-        abrirVentanaEdicion();
-    }
-
-    private void abrirVentanaEdicion() {
-        Paciente paciente = PacienteSession.getCurrentUser();
-
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Editar Datos");
-        dialog.setHeaderText("Editar teléfono, dirección o correo");
-
-        // Crear campos de texto para editar
-        TextField telefonoField = new TextField(paciente.getTelefono());
-        TextField direccionField = new TextField(paciente.getDireccion());
-        TextField correoField = new TextField(paciente.getCorreo());
-
-        VBox vbox = new VBox(10,
-                new Label("Teléfono:"), telefonoField,
-                new Label("Dirección:"), direccionField,
-                new Label("Correo:"), correoField
-        );
-
-        dialog.getDialogPane().setContent(vbox);
-        dialog.getDialogPane().getStylesheets().add(getClass().getResource("/org/example/proyectohospital/styles/styles.css").toExternalForm());
-
-        // Mostrar la ventana y esperamos a que el usuario rellene
-        dialog.showAndWait().ifPresent(response -> {
-            paciente.setTelefono(telefonoField.getText());
-            paciente.setDireccion(direccionField.getText());
-            paciente.setCorreo(correoField.getText());
-
-            // Guardar cambios en la base de datos
-            actualizarInfoPaciente(paciente);
-
-            // Actualizar la vista con los nuevos datos
-            actualizarVistaPaciente(paciente);
-        });
-    }
-
-    private void actualizarInfoPaciente(Paciente paciente) {
-        String query = "UPDATE Pacientes SET Teléfono = ?, Dirección = ?, Correo_Electrónico = ? WHERE ID_Paciente = ?";
-
-        try (Connection conn = JDBC.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, paciente.getTelefono());
-            pstmt.setString(2, paciente.getDireccion());
-            pstmt.setString(3, paciente.getCorreo());
-            pstmt.setInt(4, paciente.getId());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void actualizarVistaPaciente(Paciente paciente) {
-        // Actualizar la vista con los nuevos datos del paciente
-        usuarioVBox.getChildren().clear();
-        usuarioVBox.getChildren().add(new Label("Nombre y Apellidos: " + paciente.getNombre() + " " + paciente.getApellidos()));
-        usuarioVBox.getChildren().add(new Label("Fecha de Nacimiento: " + paciente.getFechaNacimiento().toString()));
-        usuarioVBox.getChildren().add(new Label("DNI: " + paciente.getDNI()));
-        usuarioVBox.getChildren().add(new Label("Teléfono: " + paciente.getTelefono()));
-        usuarioVBox.getChildren().add(new Label("Dirección: " + paciente.getDireccion()));
-        usuarioVBox.getChildren().add(new Label("Correo: " + paciente.getCorreo()));
-    }
-
+    // Metodo para cargar el historial medico del paciente
     private void cargarHistorialMedico(Paciente paciente) {
         String query = "SELECT Fecha_Visita, Diagnóstico, Tratamiento FROM Historial_Medico WHERE ID_Paciente = ?";
 
@@ -424,26 +430,27 @@ public class MainController {
             pstmt.setInt(1, paciente.getId());
             ResultSet rs = pstmt.executeQuery();
 
-            historialCompleto.clear(); // Limpiar la lista antes de cargar nuevos datos
+            historialCompleto.clear();
 
             while (rs.next()) {
                 String fechaVisita = rs.getDate("Fecha_Visita").toString();
                 String diagnostico = rs.getString("Diagnóstico");
                 String tratamiento = rs.getString("Tratamiento");
 
-                // Añadir al historial completo
+                // Añadimos al historial completo
                 historialCompleto.add(new HistorialMedico(fechaVisita, diagnostico, tratamiento));
             }
 
-            // Mostrar el historial completo inicialmente
+            // Mostramos el historial completo inicialmente
             mostrarHistorial(historialCompleto);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    // Metodo para mostrar el historial medico del paciente
     private void mostrarHistorial(ObservableList<HistorialMedico> historial) {
-        historialContainer.getChildren().clear(); // Limpiar el contenedor
+        historialContainer.getChildren().clear();
 
         for (HistorialMedico entrada : historial) {
             HBox tarjeta = crearTarjetaHistorial(entrada.getFechaVisita(), entrada.getDiagnostico(), entrada.getTratamiento());
@@ -451,6 +458,7 @@ public class MainController {
         }
     }
 
+    // Metodo para filtrar la vista del historial medico
     private void filtrarHistorial() {
         String terminoBusqueda = busquedaField.getText().toLowerCase();
         String filtroSeleccionado = filtroComboBox.getValue();
@@ -459,7 +467,7 @@ public class MainController {
 
         for (HistorialMedico entrada : historialCompleto) {
             boolean coincide = false;
-
+            // Select de los diferentes filtros
             switch (filtroSeleccionado) {
                 case "Fecha":
                     coincide = entrada.getFechaVisita().toLowerCase().contains(terminoBusqueda);
@@ -477,10 +485,11 @@ public class MainController {
             }
         }
 
-        // Mostrar el historial filtrado
+        // Mostramos el historial filtrado
         mostrarHistorial(historialFiltrado);
     }
-    // Método para crear una tarjeta de historial médico
+
+    // Metodo para crear una tarjeta de historial médico
     private HBox crearTarjetaHistorial(String fechaVisita, String diagnostico, String tratamiento) {
         HBox tarjeta = new HBox(15);
         tarjeta.getStyleClass().add("tarjeta-historial");
@@ -508,6 +517,7 @@ public class MainController {
         return tarjeta;
     }
 
+    // Metodos para los botones del footer con los iconos de redes sociales
     @FXML
     private void facebookClicked() {
         try {

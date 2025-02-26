@@ -1,10 +1,12 @@
 package org.example.proyectohospital.models;
 
+// Modelo de clase Historial Medico basado en la tabla de base de datos
 public class HistorialMedico {
     private String fechaVisita;
     private String diagnostico;
     private String tratamiento;
 
+    // Constructor
     public HistorialMedico(String fechaVisita, String diagnostico, String tratamiento) {
         this.fechaVisita = fechaVisita;
         this.diagnostico = diagnostico;

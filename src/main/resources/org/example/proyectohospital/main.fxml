@@ -69,7 +69,8 @@
             </Tab>
             <Tab closable="false" text="Mi Usuario">
                 <AnchorPane>
-                    <VBox fx:id="usuarioVBox" styleClass="tarjeta-usuario" alignment="CENTER" spacing="10" AnchorPane.leftAnchor="600"
+                    <VBox fx:id="usuarioVBox" styleClass="tarjeta-usuario" alignment="CENTER" spacing="10"
+                          AnchorPane.leftAnchor="600"
                           AnchorPane.rightAnchor="600" AnchorPane.topAnchor="50">
                     </VBox>
                     <!-- Botón para editar -->
@@ -80,23 +81,25 @@
             <Tab closable="false" text="Historial Médico">
                 <AnchorPane>
                     <!-- Barra de búsqueda y filtrado -->
-                    <HBox spacing="10" AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
-                        <TextField fx:id="busquedaField" promptText="Buscar..." />
+                    <HBox spacing="10" AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="20.0"
+                          AnchorPane.rightAnchor="20.0">
+                        <TextField fx:id="busquedaField" promptText="Buscar..."/>
                         <ComboBox fx:id="filtroComboBox" promptText="Filtrar por" styleClass="combo-box">
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="Fecha" />
-                                    <String fx:value="Diagnóstico" />
-                                    <String fx:value="Tratamiento" />
+                                    <String fx:value="Fecha"/>
+                                    <String fx:value="Diagnóstico"/>
+                                    <String fx:value="Tratamiento"/>
                                 </FXCollections>
                             </items>
                         </ComboBox>
                     </HBox>
 
                     <!-- ScrollPane para permitir el desplazamiento -->
-                    <ScrollPane fitToWidth="true" AnchorPane.topAnchor="70.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.bottomAnchor="20.0">
+                    <ScrollPane fitToWidth="true" AnchorPane.topAnchor="70.0" AnchorPane.leftAnchor="20.0"
+                                AnchorPane.rightAnchor="20.0" AnchorPane.bottomAnchor="20.0">
                         <!-- Contenedor principal para las tarjetas -->
-                        <VBox fx:id="historialContainer" spacing="20" />
+                        <VBox fx:id="historialContainer" spacing="20"/>
                     </ScrollPane>
                 </AnchorPane>
             </Tab>
