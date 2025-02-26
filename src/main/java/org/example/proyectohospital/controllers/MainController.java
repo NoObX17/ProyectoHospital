@@ -5,6 +5,8 @@ import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
 import com.calendarfx.view.CalendarView;
 import com.calendarfx.view.DateControl;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Dialog;
@@ -17,6 +19,7 @@ import javafx.util.Callback;
 import org.example.proyectohospital.database.JDBC;
 import org.example.proyectohospital.PacienteSession;
 import org.example.proyectohospital.models.Cita;
+import org.example.proyectohospital.models.HistorialMedico;
 import org.example.proyectohospital.models.Paciente;
 
 
@@ -34,10 +37,13 @@ public class MainController {
 
     @FXML public AnchorPane paneCalendar;
     @FXML private VBox usuarioVBox;
+    @FXML private TextField busquedaField;
+    @FXML private ComboBox<String> filtroComboBox;
     @FXML private VBox historialContainer;
 
     private CalendarView calendarView;
     private Calendar citasCalendar;
+    private ObservableList<HistorialMedico> historialCompleto = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
@@ -57,8 +63,15 @@ public class MainController {
         usuarioVBox.getChildren().add(new Label("Dirección: " + paciente.getDireccion()));
         usuarioVBox.getChildren().add(new Label("Correo: " + paciente.getCorreo()));
 
-        // Cargar el historial médico del paciente
-        cargarHistorialMedico(paciente);
+        // Cargar el historial médico completo
+        cargarHistorialMedico(PacienteSession.getCurrentUser());
+
+        // Configurar el ComboBox de filtrado
+        filtroComboBox.getSelectionModel().selectFirst(); // Seleccionar el primer filtro por defecto
+
+        // Escuchar cambios en el campo de búsqueda y el ComboBox
+        busquedaField.textProperty().addListener((observable, oldValue, newValue) -> filtrarHistorial());
+        filtroComboBox.valueProperty().addListener((observable, oldValue, newValue) -> filtrarHistorial());
     }
 
     private void configurarCalendario(Paciente paciente) {
@@ -411,23 +424,62 @@ public class MainController {
             pstmt.setInt(1, paciente.getId());
             ResultSet rs = pstmt.executeQuery();
 
-            // Limpiar el contenedor antes de añadir nuevas tarjetas
-            historialContainer.getChildren().clear();
+            historialCompleto.clear(); // Limpiar la lista antes de cargar nuevos datos
 
             while (rs.next()) {
                 String fechaVisita = rs.getDate("Fecha_Visita").toString();
                 String diagnostico = rs.getString("Diagnóstico");
                 String tratamiento = rs.getString("Tratamiento");
 
-                // Crear una tarjeta para cada entrada del historial
-                HBox tarjeta = crearTarjetaHistorial(fechaVisita, diagnostico, tratamiento);
-                historialContainer.getChildren().add(tarjeta);
+                // Añadir al historial completo
+                historialCompleto.add(new HistorialMedico(fechaVisita, diagnostico, tratamiento));
             }
+
+            // Mostrar el historial completo inicialmente
+            mostrarHistorial(historialCompleto);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    private void mostrarHistorial(ObservableList<HistorialMedico> historial) {
+        historialContainer.getChildren().clear(); // Limpiar el contenedor
+
+        for (HistorialMedico entrada : historial) {
+            HBox tarjeta = crearTarjetaHistorial(entrada.getFechaVisita(), entrada.getDiagnostico(), entrada.getTratamiento());
+            historialContainer.getChildren().add(tarjeta);
+        }
+    }
+
+    private void filtrarHistorial() {
+        String terminoBusqueda = busquedaField.getText().toLowerCase();
+        String filtroSeleccionado = filtroComboBox.getValue();
+
+        ObservableList<HistorialMedico> historialFiltrado = FXCollections.observableArrayList();
+
+        for (HistorialMedico entrada : historialCompleto) {
+            boolean coincide = false;
+
+            switch (filtroSeleccionado) {
+                case "Fecha":
+                    coincide = entrada.getFechaVisita().toLowerCase().contains(terminoBusqueda);
+                    break;
+                case "Diagnóstico":
+                    coincide = entrada.getDiagnostico().toLowerCase().contains(terminoBusqueda);
+                    break;
+                case "Tratamiento":
+                    coincide = entrada.getTratamiento().toLowerCase().contains(terminoBusqueda);
+                    break;
+            }
+
+            if (coincide) {
+                historialFiltrado.add(entrada);
+            }
+        }
+
+        // Mostrar el historial filtrado
+        mostrarHistorial(historialFiltrado);
+    }
     // Método para crear una tarjeta de historial médico
     private HBox crearTarjetaHistorial(String fechaVisita, String diagnostico, String tratamiento) {
         HBox tarjeta = new HBox(15);
@@ -452,7 +504,6 @@ public class MainController {
                     getStyleClass().add("contenido-historial");
                 }}
         );
-
         tarjeta.getChildren().add(contenido);
         return tarjeta;
     }

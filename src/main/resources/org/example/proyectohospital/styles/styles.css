@@ -143,6 +143,7 @@
 .bienvenida {
     -fx-font-size: 24px;
 }
+
 /* Estilos para noticias */
 .titulo-noticia {
     -fx-font-size: 18px;
@@ -166,6 +167,15 @@
     -fx-background-color: #008F6F;
     -fx-pref-height: 4;
     -fx-border-color: null ;
+}
+
+.tarjeta-usuario {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);
 }
 
 /* Estilos para las tarjetas de historial médico */
@@ -196,21 +206,23 @@
 }
 
 /* Estilos para el ScrollPane */
+/* Fondo transparente */
 .scroll-pane {
     -fx-background-color: transparent; /* Fondo transparente */
 }
-
 .scroll-pane .viewport {
-    -fx-background-color: transparent; /* Fondo transparente */
+    -fx-background-color: transparent;
 }
 
+/* Fondo barra scroll */
 .scroll-bar:vertical {
-    -fx-background-color: transparent; /* Color de fondo de la barra de desplazamiento */
+    -fx-background-color: transparent;
 }
 
+/* Barra scroll */
 .scroll-bar:vertical .thumb {
-    -fx-background-color: #7F8C8D; /* Color del "thumb" (barra deslizante) */
-    -fx-background-radius: 5px; /* Bordes redondeados */
+    -fx-background-color: #7F8C8D;
+    -fx-background-radius: 5px;
 }
 
 /* Flechas scroll */
@@ -218,4 +230,53 @@
 .scroll-bar:vertical .decrement-button {
     -fx-background-color: transparent;
     -fx-padding: 0 0 0 0;
+}
+
+/* Estilo base del ComboBox */
+.combo-box {
+    -fx-background-color: #ffffff; /* Fondo */
+    -fx-border-color: #b2ebf2; /* Borde suave */
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5px; /* Bordes redondeados para el fondo */
+    -fx-font-size: 14px; /* Tamaño de la fuente */
+    -fx-text-fill: #2c3e50; /* Color del texto */
+}
+
+/* Estilo del botón desplegable */
+.combo-box .arrow-button {
+    -fx-background-color: #ffffff; /* Color de fondo del botón */
+    -fx-background-radius: 0 5px 5px 0; /* Bordes redondeados solo en el lado derecho */
+}
+
+/* Estilo de la flecha del ComboBox */
+.combo-box .arrow {
+    -fx-background-color: #008F6F; /* Color de la flecha */
+}
+
+/* Estilo del ComboBox cuando está abierto */
+.combo-box .list-view {
+    -fx-background-color: #ffffff; /* Fondo de la lista desplegable */
+    -fx-border-color: #bdc3c7; /* Color del borde de la lista */
+    -fx-border-radius: 5px; /* Bordes redondeados para la lista */
+    -fx-background-radius: 5px; /* Bordes redondeados para el fondo de la lista */
+}
+
+/* Estilo de los elementos de la lista desplegable */
+.combo-box .list-cell {
+    -fx-background-color: #ffffff; /* Fondo de los elementos */
+    -fx-text-fill: #2c3e50; /* Color del texto de los elementos */
+    -fx-padding: 5px; /* Espaciado interno de los elementos */
+}
+
+/* Estilo de los elementos de la lista desplegable cuando están seleccionados */
+.combo-box .list-cell:filled:selected {
+    -fx-background-color: #ffffff; /* Fondo del elemento seleccionado */
+    -fx-text-fill: #008F6F; /* Color del texto del elemento seleccionado */
+}
+
+/* Estilo de los elementos de la lista desplegable cuando están hover */
+.combo-box .list-cell:filled:hover {
+    -fx-background-color: #ffffff; /* Fondo del elemento al pasar el mouse */
+    -fx-text-fill: #008F6F; /* Color del texto al pasar el mouse */
 }
